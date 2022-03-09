@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>checkout</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-row>
+    <ion-col size="6">
+      <h3>{{currentBook?.volumeInfo.title}}</h3>
+      <h3>Prezzo: {{currentBook?.saleInfo.listPrice.amount}} €</h3>
+    </ion-col>
+    <ion-col size="6">
+      <div  class="my-img" 
+      [ngStyle]=
+      "currentBook?.volumeInfo.imageLinks != undefined ?
+        {'background-image': 'url(' + currentBook?.volumeInfo.imageLinks.thumbnail + ')', 'background-size': 'cover'  } 
+        : {'background-image': 'url(assets/img-placeholder.png)', 'background-size': 'cover'  }">
+      </div>
+    </ion-col>
+  </ion-row>
+  
+  <ion-row class="ion-padding">
+    <ion-list>
+      <ion-radio-group value="pay">
+        <ion-list-header>
+          <ion-label>Scegli il Metodo di Pagamento</ion-label>
+        </ion-list-header>
+    
+        <ion-item>
+          <ion-label>Visa</ion-label>
+          <ion-radio slot="start" value="visa"></ion-radio>
+        </ion-item>
+    
+        <ion-item>
+          <ion-label>MasterCard</ion-label>
+          <ion-radio slot="start" value="MasterCard"></ion-radio>
+        </ion-item>
+    
+        <ion-item>
+          <ion-label>PayPal</ion-label>
+          <ion-radio slot="start" value="PayPal"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+    <br>
+  </ion-row>
+
+
+
+  <ion-button (click)="buyBook(currentBook?.id)"  expand="block" size="large" color="danger">Buy book!</ion-button>
+
+</ion-content>

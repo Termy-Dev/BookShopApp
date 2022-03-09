@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Details</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" style="z-index: 99999;">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <h1 class="title-book">{{currentBook?.volumeInfo.title}}</h1>
+  <hr>
+
+  <ion-row>
+    <ion-col size="6">
+
+        <h2 class="subtitle-book">{{currentBook?.volumeInfo.subtitle}}</h2>
+
+        <div class="author-box">
+          <ion-icon name="pencil-outline"></ion-icon>
+          <h4 class="author-book"> {{currentBook?.volumeInfo.authors[0]}}</h4>
+        </div>
+      
+        <div class="data-box">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <h4 class="publishedDate-book">{{currentBook?.volumeInfo.publishedDate}}</h4>
+        </div>
+      
+      </ion-col>
+      <ion-col  size="6">
+          <div  class="my-img" 
+                  [ngStyle]=
+                  "currentBook?.volumeInfo.imageLinks != undefined ?
+                    {'background-image': 'url(' + currentBook?.volumeInfo.imageLinks.thumbnail + ')', 'background-size': 'cover'  } 
+                    : {'background-image': 'url(assets/img-placeholder.png)', 'background-size': 'cover'  }">
+          </div>
+          <div class="rating" >
+            <div *ngFor="let star of stars;">
+              <img src="assets/Star-1.svg" *ngIf="rating > 0">
+              <img src="assets/Star-2.svg" *ngIf="rating == 0" >
+            </div>
+            <h6>{{currentBook?.volumeInfo.averageRating}}</h6>
+          </div>      
+      </ion-col>
+    </ion-row>
+
+    <h3  class="detail-book">Più dettagli:</h3>
+    <ion-row>
+      <ion-col>
+        <p class="description-book">{{currentBook?.volumeInfo.description}}</p>
+      
+        <div class="pages-box">
+          <ion-icon name="book-outline"></ion-icon>
+          <h4>pagine: {{currentBook?.volumeInfo.pageCount}}</h4>
+        </div>
+        
+        <div class="pages-box">
+          <ion-icon name="storefront-outline"></ion-icon>
+          <h4>Editore A cura di: {{currentBook?.volumeInfo.publisher}}</h4>
+        </div>
+        
+        <ion-col class="language-box">
+          <h4>Lingua:</h4>
+          <img *ngIf="currentBook?.volumeInfo.language != null"  src="https://flagcdn.com/{{currentBook?.volumeInfo.language}}.svg" 
+          [alt]="currentBook?.volumeInfo.language">
+        </ion-col>
+
+      </ion-col>
+    </ion-row>
+
+    <ion-button [disabled]="!available" (click)="buyBook()"  expand="block" size="large" color="danger">{{priceBook}}</ion-button>
+ 
+
+
+
+    <h2 class="margin">Libri Simili: </h2>
+
+    <ion-slides>
+      <ion-slide *ngFor="let item of booksSlider">
+        <div class="slide">
+          <div  class="my-img-slide" 
+          [ngStyle]=
+          "item?.volumeInfo.imageLinks != undefined ?
+            {'background-image': 'url(' + item?.volumeInfo.imageLinks.thumbnail + ')', 'background-size': 'cover'  } 
+            : {'background-image': 'url(assets/img-placeholder.png)', 'background-size': 'cover'  }">
+        </div>
+          <h2 class="title-book-slide" >{{ item.volumeInfo.title | slice:0:30 }}</h2>
+        </div>
+        <ion-button  [routerLink]="['/home/' + item?.id]" >Scopri di più <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
+        
+        <!-- <ion-button  (click)="doRefresh2(item?.id)" >Scopri di più<ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button> -->
+      
+      </ion-slide>
+    </ion-slides>
+
+  
+</ion-content>

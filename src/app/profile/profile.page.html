@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>profile</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button [routerLink]="['/home']" defaultHref="home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" style="z-index: 99999;">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-row>
+    <ion-col size="6">
+      <img  src="assets/avatar.png" alt="Avatar" width="100px">
+    </ion-col>
+  </ion-row>
+
+  <hr>
+
+  
+  <ion-grid>
+    <h2>I miei Libri</h2>
+    <ion-row>
+      <ion-col *ngFor="let book of myBooks" size="6">
+        <div class="home-book">
+          <div class="my-img" 
+                [ngStyle]=
+                "book?.volumeInfo.imageLinks != undefined ?
+                {'background-image': 'url(' + book?.volumeInfo.imageLinks.thumbnail + ')', 'background-size': 'cover'  } 
+                : {'background-image': 'url(assets/img-placeholder.png)', 'background-size': 'cover'  }">
+          </div>
+          <ion-row>
+            <ion-col >
+              <h3 class="my-title">{{book?.volumeInfo.title | slice:0:15}}...</h3> 
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+
+
+</ion-content>
