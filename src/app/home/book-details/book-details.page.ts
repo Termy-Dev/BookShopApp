@@ -4,7 +4,6 @@ import { Item } from 'src/app/services/api-books-interface';
 import { ApiBooksService } from 'src/app/services/api-books.service';
 
 
-
 interface RefresherEventDetail {
   complete(): void;
 }
@@ -23,7 +22,9 @@ interface RefresherCustomEvent extends CustomEvent {
 export class BookDetailsPage implements OnInit {
 
   currentBook;
-  stars: number[] = [];
+  stars: number[] = [0,0,0,0,0];
+
+
   rating: number;
 
   priceBook: string;
@@ -32,7 +33,10 @@ export class BookDetailsPage implements OnInit {
 
   booksSlider: Item[];
   nameBook: string;
-  
+
+
+
+
 
   constructor(private route: ActivatedRoute, private http: ApiBooksService, private router : Router) { }
 
@@ -50,16 +54,34 @@ export class BookDetailsPage implements OnInit {
 
   ratingBook(){
     if(this.currentBook.volumeInfo.averageRating !== undefined){
-      this.rating = Math.floor(Number(this.currentBook.volumeInfo.averageRating));
-        for (let i = 0; i < this.rating ; i++) {
-          this.stars.push(i);
-        }
-    }else{
-      this.rating = 0;
-      this.stars = [1,2,3,4,5]
+      const a = this.currentBook.volumeInfo.averageRating % 1;
+      const b = Math.floor(Number(this.currentBook.volumeInfo.averageRating));
+
+     for(let i = 0; i < b ; i++) {
+        this.stars[i] = b/b;
+     }
+     if(a > 0 ){
+       this.stars[b] = a;
+     }
+      console.log("stars = " + this.stars)
+      console.log("a = " + a)
+      console.log("b = " + b)
+
+      this.rating = Math.floor(Number(this.currentBook.volumeInfo.averageRating));  
+    }
+
+  }
+
+  getStars = function() {
+    if(this.currentBook.volumeInfo.averageRating !== undefined){
+      let rating = this.currentBook.volumeInfo.averageRating;
+      var val = parseFloat(rating);
+      var size = val/5*100;
+      return size + '%';
     }
   }
 
+  
   convertLang(){
     if(this.currentBook.volumeInfo.language == "en"){
       this.currentBook.volumeInfo.language = "gb"
